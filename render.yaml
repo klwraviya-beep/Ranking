@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: klw-ranking-bot
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TZ
+        value: Asia/Colombo
+      # Optional: pre-set your number so the service logs a pairing code on boot
+      # Uncomment the lines below if you want to auto-pair on deploy
+      # - key: PAIR_NUMBER
+      #   value: "94778430626"

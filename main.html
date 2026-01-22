@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAVIYA BOY | WA PAIRING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://files.catbox.moe/kyds74.jpeg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Glassmorphism Card */
+    .box {
+      width: 90%;
+      max-width: 400px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      text-align: center;
+      color: white;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    .box h3 {
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      font-size: 24px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .box h4 {
+      font-weight: 500;
+      color: #ff9d9d;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .icon-container {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Input Field Area */
+    .input-group {
+      position: relative;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+      color: #333;
+      outline: none;
+      text-align: center;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      background: white;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Button */
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* Messages */
+    #waiting-message {
+      color: #e0e0e0;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .code-display {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 10px;
+      color: #00ff88;
+      cursor: pointer;
+      word-spacing: 5px;
+    }
+
+    .error-msg {
+      color: #ff4d4d;
+      font-weight: bold;
+      background: rgba(0,0,0,0.5);
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <div class="icon-container">
+      <i class="fab fa-whatsapp"></i>
+    </div>
+    
+    <h3>RAVIYA BOY</h3>
+    <h4>WHATSAPP BOT PAIRING</h4>
+    
+    <p style="font-size: 13px; margin-bottom: 15px; opacity: 0.9;">
+      Enter your number with country code<br>
+      (Ex: 9477xxxxxxx)
+    </p>
+
+    <div class="input-group">
+      <input type="number" id="number" placeholder="9477xxxxxxx">
+    </div>
+
+    <button id="submit">GET PAIRING CODE</button>
+
+    <div id="waiting-message" style="display: none;">
+      <i class="fas fa-spinner fa-spin"></i> Processing...
+    </div>
+
+    <main id="pair"></main>
+    
+    <div class="footer">
+      Powered by Raviya Boy Tech
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    let output = document.getElementById("pair");
+    let btn = document.getElementById("submit");
+    let input = document.getElementById("number");
+    let waiting = document.getElementById("waiting-message");
+
+    // Copy Function
+    async function Copy() {
+      let copyText = document.getElementById("copy");
+      let originalText = copyText.innerText;
+      
+      try {
+        await navigator.clipboard.writeText(originalText.replace('CODE: ', ''));
+        copyText.innerText = "COPIED! ✅";
+        setTimeout(() => {
+          copyText.innerText = originalText;
+        }, 1000);
+      } catch (err) {
+        console.error('Failed to copy', err);
+      }
+    }
+
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      
+      // Validation
+      let numValue = input.value.replace(/[^0-9]/g, ""); // Remove non-numbers
+      
+      if (!numValue) {
+        output.innerHTML = '<div class="error-msg">❗ Please enter your number</div>';
+        return;
+      } 
+      
+      if (numValue.length < 10) {
+        output.innerHTML = '<div class="error-msg">❌ Invalid Number Format</div>';
+        return;
+      }
+
+      // Add '+' if missing for the API call (optional depending on your backend)
+      // Assuming backend handles raw numbers, but let's formatting for UI
+      // const formattedNum = "+" + numValue; 
+
+      // UI Loading State
+      btn.style.display = "none";
+      waiting.style.display = "block";
+      output.innerHTML = '';
+
+      try {
+        // Call the endpoint (Make sure index.js has /code endpoint)
+        let { data } = await axios(`/code?number=${numValue}`);
+        
+        let code = data.code || "Service Unavailable";
+        
+        // Show Result
+        waiting.style.display = "none";
+        btn.style.display = "block";
+        
+        output.innerHTML = `
+          <div class="code-display" id="copy" onclick="Copy()">
+            ${code}
+          </div>
+          <p style="font-size:12px; margin-top:5px; color:#ffff00;">Tap code to copy</p>
+        `;
+        
+      } catch (error) {
+        waiting.style.display = "none";
+        btn.style.display = "block";
+        output.innerHTML = '<div class="error-msg">⚠️ Error: Check Console</div>';
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

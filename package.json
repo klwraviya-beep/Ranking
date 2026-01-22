@@ -1,0 +1,21 @@
+{
+  "name": "klw-ranking-bot",
+  "version": "1.0.0",
+  "description": "KLW Ranking WhatsApp Bot: group leaderboards, welcome, menu, owner info, pairing code HTML. Deployable on Render.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "NODE_ENV=development node index.js",
+    "pair": "node pair.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "npm:baileys-dtz",
+    "express": "^4.19.2",
+    "moment-timezone": "^0.5.45",
+    "pino": "^9.3.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
